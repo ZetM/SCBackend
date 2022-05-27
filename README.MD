@@ -1,3 +1,7 @@
+# About
+
+Express.js app that serves as part of the backend for the frontend app here. https://github.com/ZetM/WebPage
+
 #### Setup
 
 ```bash
