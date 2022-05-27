@@ -47,27 +47,31 @@ const addGame = async (req,res) => {
 
 const updateGame = async (req,res) => {
 
-    const {body: {id:gameId, fav:fav, fin:fin, plat:plat }} = req
-
-    const game = await Game.findOneAndUpdate( {_id:gameId},
+    const {id, fav, fin, plat, rat} = req.body
+    
+    const game = await Game.findOneAndUpdate( {_id:id},
         {favorite:fav,
         finished:fin,
-        platinum:plat,}
-    )
+        platinum:plat,
+        personal_rating:rat,}, {returnOriginal: false}
+    );
+    if(!game){
+        throw new NotFoundError(`No game with id: ${id}`)
+    }
 
     const games = await Game.find({createdBy:req.user.userID}).sort('createdAt')
     res.status(StatusCodes.OK).json({games, count:games.length})
 }
 
 const deleteGame = async (req,res) => {
-    const {query:{id:gameId}} = req
+    const {id} = req.body
 
     const game = await Game.findByIdAndRemove({
-        _id:gameId,
+        _id:id,
         createdBy:req.user.userID
     })
     if(!game){
-        throw new NotFoundError(`No game with id: ${gameId}`)
+        throw new NotFoundError(`No game with id: ${id}`)
     }
     const games = await Game.find({createdBy:req.user.userID}).sort('createdAt')
     res.status(StatusCodes.OK).json({games, count:games.length})

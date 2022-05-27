@@ -26,6 +26,10 @@ const GameSchema = new mongoose.Schema({
         type:Number,
         require:true
     },
+    personal_rating:{
+        type:Number,
+        default: 3,
+    },
     favorite:{
         type:Boolean,
         default:false,

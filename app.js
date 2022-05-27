@@ -2,8 +2,6 @@ require('dotenv').config();
 require('express-async-errors');
 const express = require('express');
 const app = express();
-const axios = require('axios')
-
 
 //connectDB
 const connectDB = require('./db/connect')
@@ -11,6 +9,7 @@ const authenticateUser = require('./middleware/authentication')
 //routers
 const authRouter = require('./routes/auth')
 const gamesRouter = require('./routes/games')
+const commentsRouter = require('./routes/comments')
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
@@ -38,11 +37,13 @@ app.get('/', (req,res)=>{
 // routes
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/games',authenticateUser, gamesRouter)
+app.use('/api/v1/comments',authenticateUser, commentsRouter)
+
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 const start = async () => {
   try {
